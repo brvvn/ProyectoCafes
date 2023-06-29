@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Lista de Cafes</h2>
+
+<div id="cafesContainer"> </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    //Declaro una función llamada obtenerCafes();
+
+    $(document).ready(function () {
+        obtenerCafes();
+    });
+
+    function obtenerCafes() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("ObtenerCafeJson", "cafes")",
+            dataType: "json",
+            success: function (cafes) {
+                mostrarCafes(cafes)
+            },
+            error: function () {
+                alert("Error al obtener los datos")
+            }
+        });
+    }
+
+    function mostrarCafes(cafes) {
+        var output = "";
+
+        for (var i = 0; i < cafes.length; i++) {
+            output += "<div>";
+            output += "<strong> ID Boleta: </strong>" + cafes[i].idBoleta + "<br/>";
+            output += "<strong> Nombre del Vendedor: </strong>" + cafes[i].claseVenta.NombreVendedor + "<br/>";
+            output += "<strong> Fecha de Venta: </strong>" + cafes[i].claseVenta.FechaVenta + "<br/>";
+            output += "<strong> Nombre del Café: </strong>" + cafes[i].NombreCafe + "<br/>";
+            output += "<strong> Tipo de Café: </strong>" + cafes[i].TipoCafe + "<br/>";
+            output += "<strong> Cantidad: </strong>" + cafes[i].claseVenta.CantidadProducto + "<br/>";
+            output += "<strong> Precio: </strong>" + cafes[i].Precio + "<br/>";
+            output += "</div>";
+            output += "<br />";
+        }
+
+        $("#cafesContainer").html(output);
+
+    }
+
+</script>
